@@ -608,6 +608,43 @@ function getPathProgress(path, progress, isPathTargetInsideSVG) {
   }
 }
 
+// SVG Shape Interpolation
+
+function normalizePoints(pathEl, numPoints = 100) {
+  const length = getTotalLength(pathEl);
+  const points = [];
+  for (let i = 0; i < numPoints; i++) {
+    const point = pathEl.getPointAtLength((length * i) / (numPoints - 1));
+    points.push([point.x, point.y]);
+  }
+  return points;
+}
+
+function pointsToPath(points) {
+  return 'M ' + points.map(([x, y]) => `${x},${y}`).join(' L ');
+}
+
+function interpolatePoints(points1, points2, progress) {
+  return points1.map((p1, i) => {
+    const p2 = points2[i];
+    return [
+      p1[0] + (p2[0] - p1[0]) * progress,
+      p1[1] + (p2[1] - p1[1]) * progress
+    ];
+  });
+}
+
+function morphPath(path1, path2, options = {}) {
+  const numPoints = options.numPoints || 100;
+  const points1 = normalizePoints(is.str(path1) ? selectString(path1)[0] : path1, numPoints);
+  const points2 = normalizePoints(is.str(path2) ? selectString(path2)[0] : path2, numPoints);
+  
+  return function(progress) {
+    const interpolated = interpolatePoints(points1, points2, progress);
+    return pointsToPath(interpolated);
+  }
+}
+
 // Decompose value
 
 function decomposeValue(val, unit) {
@@ -1286,5 +1323,6 @@ anime.timeline = timeline;
 anime.easing = parseEasings;
 anime.penner = penner;
 anime.random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+anime.morphPath = morphPath;
 
 export default anime;
