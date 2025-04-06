@@ -181,12 +181,25 @@ anime({
 
 - `anime.random(min, max)`: Generates a random number between min and max.
 - `anime.stagger(value, options)`: Creates staggered timing for multiple elements.
+- `anime.morphPath(pathFrom, pathTo, options)`: Generates a function for path morphing animations.
 
 ```javascript
 anime({
   targets: '.stagger-demo div',
   translateX: 250,
   delay: anime.stagger(100, {start: 500})
+});
+
+// Path morphing example
+const morphPath = anime.morphPath('#pathFrom', '#pathTo');
+
+anime({
+  targets: '#morphedPath',
+  d: morphPath,
+  duration: 2000,
+  easing: 'easeInOutQuad',
+  loop: true,
+  direction: 'alternate'
 });
 ```
 

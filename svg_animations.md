@@ -45,6 +45,23 @@ anime({
 
 This animation morphs a square into a triangle and back.
 
+For more advanced path morphing, you can use the `anime.morphPath()` function:
+
+```javascript
+const morphPath = anime.morphPath('#path1', '#path2');
+
+anime({
+  targets: '#morphPath',
+  d: morphPath,
+  duration: 2000,
+  easing: 'easeInOutQuad',
+  loop: true,
+  direction: 'alternate'
+});
+```
+
+This function takes two path elements as input and returns a function that interpolates between them, allowing for smoother and more complex shape transitions.
+
 ## Line Drawing
 
 Line drawing animation creates the effect of a line being drawn on the screen. This is achieved by animating the `stroke-dashoffset` property of an SVG path.
@@ -122,4 +139,4 @@ anime({
 
 This example combines line drawing, fill color change, and scaling animations for an SVG logo.
 
-By leveraging these techniques, you can create engaging and interactive SVG animations using anime.js. Experiment with different properties, easings, and timings to achieve the desired effects for your project.
+By leveraging these techniques, including the new `anime.morphPath()` function, you can create even more engaging and interactive SVG animations using anime.js. Experiment with different properties, easings, and timings to achieve the desired effects for your project.
